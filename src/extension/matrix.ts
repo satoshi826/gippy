@@ -13,7 +13,7 @@ export const identity = (dest: Matrix) => {
 export const create = () => {
   const dest = new Array(16)
   identity(dest)
-  return dest
+  return dest as Matrix
 }
 
 export const copy = (mat1: Matrix, dest: Matrix) => {
@@ -94,14 +94,14 @@ export const rotate = (mat: Matrix, angle: number, axis: Vector, dest: Matrix) =
     y = a * c * f + b * d,
     z = b * c * f - a * d,
     A = c * c * f + e
-    if(angle) {
-      if(mat !== dest) {
-        dest[12] = mat[12]; dest[13] = mat[13]
-        dest[14] = mat[14]; dest[15] = mat[15]
-      }
-    } else {
-      dest = mat
+  if(angle) {
+    if(mat !== dest) {
+      dest[12] = mat[12]; dest[13] = mat[13]
+      dest[14] = mat[14]; dest[15] = mat[15]
     }
+  } else {
+    dest = mat
+  }
   dest[12] = mat[12]; dest[13] = mat[13]
   dest[14] = mat[14]; dest[15] = mat[15]
 
@@ -221,9 +221,12 @@ export const inverse = (mat: Matrix, dest: Matrix) => {
 }
 
 export const normalize = (vec: Vector) => {
-  const sq = Math.sqrt(vec.reduce((a, c) => a += c*c, 0))
-  if (sq !== 1){
-    return vec.map(v => v/sq)
-  }
+  const sq = Math.sqrt(vec.reduce((a, c) => a += c * c, 0))
+  if (sq !== 1) return vec.map(v => v / sq)
   return vec
 }
+
+export const lerp = (a: number, b: number, t: number) => {
+  return a + (b - a) * t
+}
+

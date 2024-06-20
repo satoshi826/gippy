@@ -1,4 +1,4 @@
-import { partition } from 'jittoku'
+import {partition} from 'jittoku'
 import {AttributeName, Core, TextureName, TextureType, UniformName} from '.'
 import {Program} from './Program'
 import {Vao} from './Vao'
@@ -19,7 +19,7 @@ export class Renderer {
   backgroundColor: ColorArray
   isCanvas: boolean
   frameBuffer: WebGLFramebuffer | null
-  depthRenderBuffer:  WebGLRenderbuffer | null
+  depthRenderBuffer: WebGLRenderbuffer | null
   renderTexture: TextureWithInfo[]
   depthTexture: TextureWithInfo | null
   drawBuffers: number[]
@@ -90,8 +90,7 @@ export class Renderer {
     if (program.texture.length) program.texture.forEach((tex) => this.core.useTexture(tex))
   }
 
-  render<U extends UniformName, T extends TextureName, K extends AttributeName>
-  (vao: Vao<K>, program: Program<U, T>) {
+  render<U extends UniformName, T extends TextureName, K extends AttributeName>(vao: Vao<K>, program: Program<U, T>) {
     this.#beforeRender(vao, program)
     if (vao.instancedCount) {
       this.core.renderInstanced(program.primitive, !!vao?.index, vao.instancedCount)
@@ -107,14 +106,14 @@ export class Renderer {
     if (!this.frameBuffer) throw new Error('Could not create frameBuffer')
     gl.bindFramebuffer(gl.FRAMEBUFFER, this.frameBuffer)
 
-    const [colorTextures, [depthTexture]] = partition(textures, (([_, format]) => format !== 'DEPTH_COMPONENT'))
+    const [colorTextures, [depthTexture]] = partition(textures, (([, format]) => format !== 'DEPTH_COMPONENT'))
     colorTextures.forEach(([internalFormat, format, type, filter, wrap], i) => {
       const attachment = gl.COLOR_ATTACHMENT0 + i
       this.renderTexture[i] = this.#createTexture(attachment, this.width, this.height, internalFormat, format, type, filter, wrap)
       this.drawBuffers[i] = attachment
     })
 
-    if (depthTexture){
+    if (depthTexture) {
       const [internalFormat, format, type, filter, wrap] = depthTexture
       this.depthTexture = this.#createTexture(this.core.gl.DEPTH_ATTACHMENT, this.width, this.height, internalFormat, format, type, filter, wrap)
     } else {
@@ -137,7 +136,7 @@ export class Renderer {
     gl.bindTexture(gl.TEXTURE_2D, null)
   }
 
-  #createTexture( attachment: number ,...[width, height, internalFormat, format, type, filter, wrap]: Parameters<Core['createTexture']>) {
+  #createTexture(attachment: number, ...[width, height, internalFormat, format, type, filter, wrap]: Parameters<Core['createTexture']>) {
     const texture = this.core.createTexture(width, height, internalFormat, format, type, filter, wrap) as TextureWithInfo
     if (!texture) throw new Error('Could create depth texture')
     this.core.gl.framebufferTexture2D(this.core.gl.FRAMEBUFFER, attachment, this.core.gl.TEXTURE_2D, texture, 0)

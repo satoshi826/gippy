@@ -51,7 +51,7 @@ export class Program<T extends UniformName, K extends TextureName> {
     })
   }
 
-  setTexture(texture: Record<K, WebGLTexture>){
+  setTexture(texture: Record<K, WebGLTexture>) {
     oForEach(texture, (([name, data], i) => {
       const textureNum = this.core.setTexture(name, data)
       this.uniforms[name] = {type: 'int', value: textureNum, dirty: true}
@@ -83,7 +83,7 @@ export class Program<T extends UniformName, K extends TextureName> {
     )
     fullVert = oReduce(attributeTypes,
       (result, [name, type]) =>
-      result +
+        result +
       `layout(location = ${this.core.attLoc[name]}) in ${type} ${name};\n`, fullVert) + this.vert
 
     let fullFrag = oReduce(uniformTypes,

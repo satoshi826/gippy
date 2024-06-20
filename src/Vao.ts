@@ -45,10 +45,10 @@ export class Vao<T extends AttributeName = 'a_'> {
     }))
   }
 
-  updateInstancedVbo(){
+  updateInstancedVbo() {
     this.instancedAttributes && oForEach(this.instancedAttributes, ([att, o]) => {
       o.vbo ??= this.core.createInstancedVbo(this.id, att, o.array!)
-      if (o.dirty){
+      if (o.dirty) {
         this.core.updateVbo(this.id, att, o.array!, o.vbo)
         o.dirty = false
       }

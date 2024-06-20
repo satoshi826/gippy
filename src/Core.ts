@@ -84,7 +84,7 @@ export class Core {
     }
   }
 
-  setAttLoc(attributeTypes: Record<AttributeName, AttributeType>){
+  setAttLoc(attributeTypes: Record<AttributeName, AttributeType>) {
     oForEach(attributeTypes, ([name, type]) => {
       if (isNullish(this.attLoc[name])) {
         this.stride[name] = strideMap[type]
@@ -195,7 +195,7 @@ export class Core {
 
   setUniforms(uniforms: Uniforms) {
     oForEach(uniforms, ([k, {type, value, dirty}]) => {
-      if(value == null || !dirty) return
+      if(value === null || !dirty) return
       const [method, isMat, isArray] = this.uniMethod[type]
       if (isMat) this.gl[method](this.uniLoc[this.currentProgram!][k], false, value as number[])
       else if (isArray) this.gl[method](this.uniLoc[this.currentProgram!][k], value as number[])
@@ -224,6 +224,7 @@ export class Core {
     }
   }
 
+  // Todo: 汎用化
   createTexture(
     width: number,
     height: number,
@@ -232,7 +233,7 @@ export class Core {
     type: WebGLConstants,
     filter: TextureFilter,
     wrap: TextureWrap
-    ) {
+  ) {
     const texture = this.gl.createTexture()
     this.gl.bindTexture(this.gl.TEXTURE_2D, texture)
     this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl[internalFormat], width / 2, height / 2, 0, this.gl[format], this.gl[type], null)

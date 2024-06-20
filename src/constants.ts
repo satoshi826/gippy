@@ -1,7 +1,7 @@
 import {AttributeType, UniformMethod, WebGLConstants} from '.'
 
 export const uniMethod = {
-  bool  : ['uniform1i', false, false],
+  bool : ['uniform1i', false, false],
   int  : ['uniform1i', false, false],
   float: ['uniform1f', false, false],
   vec2 : ['uniform2fv', false, true],

@@ -68,7 +68,7 @@ export class Model {
   scale?: Vector
   constructor({position, rotation = {angle: 0, axis: [0, 1, 0]}, scale}: {position?: Vector, rotation?: Rotation, scale?: Vector}) {
     this.matrix = {
-      m: create(),
+      m: create()
     }
     this.position = position
     this.rotation = rotation
