@@ -9,7 +9,7 @@ export const prepass = (core: Core) => new Program(core, {
   },
   uniformTypes: {
     u_vpMatrix     : 'mat4',
-    u_material_type: 'int' // 0: ground, 1: building, 2: light
+    u_material_type: 'int' // 0: road, 1: sky, 2: building, 3: light
   },
   vert: /* glsl */ `
         out vec3 v_position;
@@ -21,7 +21,7 @@ export const prepass = (core: Core) => new Program(core, {
           v_position = (a_mMatrix * position).xyz;
           mat3 normalMatrix = transpose(inverse(mat3(a_mMatrix)));
           v_normal = vec4(a_normal, 1.0);
-          v_pos_local = vec3(a_mMatrix[0][0], a_mMatrix[1][1], a_mMatrix[2][2]) * a_position * 0.025;
+          v_pos_local = vec3(a_mMatrix[0][0], -a_mMatrix[1][1], a_mMatrix[2][2]) * a_position * 0.025;
           mat4 mvpMatrix = u_vpMatrix * a_mMatrix;
           gl_Position = mvpMatrix * position;
           v_id = gl_InstanceID;

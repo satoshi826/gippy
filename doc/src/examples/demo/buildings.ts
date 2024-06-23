@@ -64,7 +64,8 @@ export const getBuildings = () => {
         ]
       }
 
-      const isLighted = isBig && random(0, 10) > 8.5 && lightCubes.length < MAX_LIGHTS
+      const isLighted = isBig && random(0, 10) > 8 && lightCubes.length < MAX_LIGHTS && Math.sqrt(x * x + y * y) < AREA_SIZE * 0.4
+
 
       const model = new Model({
         position: [x, zScale, y],

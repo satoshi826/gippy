@@ -1,4 +1,4 @@
-import {Camera, Loop, Model, Vao, box, setHandler, plane, Core, Renderer, DEPTH, RGBA16F} from 'glaku'
+import {Camera, Loop, Model, Vao, box, setHandler, plane, Core, Renderer, DEPTH, RGBA16F, sphere} from 'glaku'
 import {prepass} from './prepass'
 import {shade} from './shading'
 import {postEffect} from './postEffect'
@@ -22,7 +22,11 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     rotation: {axis: [1, 0, 0], angle: -Math.PI / 2}
   })
 
-  console.log(CUBE_NUM, LIGHT_CUBE_NUM)
+  const sky = new Model({
+    scale   : [8000 * SCALE, 8000 * SCALE, 8000 * SCALE],
+    position: [0, 0, 0]
+  })
+
 
   const lightPos = lightCubes.flatMap(({position}) => position ?? [])
 
@@ -68,10 +72,18 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     maxInstance        : 1
   })
 
+  const skyVao = new Vao(core, {
+    id                 : 'sphere',
+    ...sphere(20, 20, 1.0),
+    instancedAttributes: ['a_mMatrix'],
+    maxInstance        : 1
+  })
+
   const prepassProgram = prepass(core)
   cubeVao.setInstancedValues({a_mMatrix: buildings.flatMap(({matrix: {m}}) => m)})
   lightCubeVao.setInstancedValues({a_mMatrix: lightCubes.flatMap(({matrix: {m}}) => m)})
   floorVao.setInstancedValues({a_mMatrix: floor.matrix.m})
+  skyVao.setInstancedValues({a_mMatrix: sky.matrix.m})
 
   const shadeProgram = shade(core, LIGHT_CUBE_NUM, preRenderer)
   shadeProgram.setUniform({u_lightPosition: lightPos})
@@ -85,6 +97,7 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     u_near: camera.near,
     u_far : camera.far
   })
+
 
   const animation = new Loop({callback: ({elapsed}) => {
 
@@ -100,9 +113,16 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     // render buildings
     prepassProgram.setUniform({u_material_type: 0})
     preRenderer.render(floorVao, prepassProgram)
+
     prepassProgram.setUniform({u_material_type: 1})
-    preRenderer.render(cubeVao, prepassProgram)
+    core.gl.frontFace(core.gl.CW)
+    preRenderer.render(skyVao, prepassProgram)
+    core.gl.frontFace(core.gl.CCW)
+
     prepassProgram.setUniform({u_material_type: 2})
+    preRenderer.render(cubeVao, prepassProgram)
+
+    prepassProgram.setUniform({u_material_type: 3})
     preRenderer.render(lightCubeVao, prepassProgram)
 
     shadeRenderer.render(planeVao, shadeProgram)
