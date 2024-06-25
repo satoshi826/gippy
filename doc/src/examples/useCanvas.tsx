@@ -1,4 +1,4 @@
-import {useLayoutEffect, useRef} from 'react'
+import {useCallback, useLayoutEffect, useMemo, useRef} from 'react'
 import Worker from '../worker?worker'
 
 export type CanvasProps = { src: string; state?: object}
@@ -10,7 +10,7 @@ export function useCanvas() {
   const coverRef = useRef<HTMLDivElement | null>(null)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const post = (...args: any[]) => workerRef.current?.postMessage(...args)
+  const post = useCallback((...args: any[]) => workerRef.current?.postMessage(...args), [])
 
   useLayoutEffect(() => {
     const wrapperEl = document.getElementById('canvas_wrapper')
@@ -33,9 +33,9 @@ export function useCanvas() {
       workerRef.current?.terminate()
       workerRef.current = null
     }
-  })
+  }, [])
 
-  const canvas = <div id='canvas_wrapper' ref={coverRef} style={{flexGrow: 1, position: 'relative'}} />
+  const canvas = useMemo(() => <div id='canvas_wrapper' ref={coverRef} style={{flexGrow: 1, position: 'relative'}} />, [])
 
   return {canvas, post, ref: coverRef}
 }

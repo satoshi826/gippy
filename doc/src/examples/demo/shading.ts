@@ -72,7 +72,7 @@ export const shade = (core: Core, lightNum: number, preRenderer: Renderer) => ne
           float diffuse = 0.0;
           float specular = 0.0;
 
-          float specIntensity = isWindow > 0.0 ? 50.0 : 20.0;
+          float specIntensity = isWindow > 0.0 ? 60.0 : 20.0;
 
           for(int i = 0; i < ${lightNum}; i++){
             lightVec = normalize(u_lightPosition[i] - position);
@@ -80,21 +80,21 @@ export const shade = (core: Core, lightNum: number, preRenderer: Renderer) => ne
             lightDecay = pow(lightDis, -1.2);
 
             reflectVec = reflect(-lightVec, normal);
-            diffuse += 40.0 * lightDecay * max(0.0, dot(lightVec, normal));
-            specular += 5000.0 * lightDecay * pow(max(0.0, dot(viewVec, reflectVec)), specIntensity);
+            diffuse += 100.0 * lightDecay * max(0.0, dot(lightVec, normal));
+            specular += 5500.0 * lightDecay * pow(max(0.0, dot(viewVec, reflectVec)), specIntensity);
           }
           float ambient = 0.02;
           float result = max((ambient + diffuse + specular) * 0.1, 0.01);
 
           vec3 resultColor = isBuilding ? vec3(0.9, 1.2, 1.8) : vec3(0.9, 0.8, 0.8);
 
-          vec3 constColor = isRoad ? vec3(20.0, 1.0, 4.0) * (
-            step(0.996, 1.0 - abs(0.95 - (2.0 * abs(fract(0.005 * position.x) - 0.5)))) +
-            step(0.996, 1.0 - abs(0.95 - (2.0 * abs(fract(0.005 * position.z) - 0.5))))
+          vec3 constColor = isRoad ? vec3(10.0, 1.0, 4.0) * (
+            step(0.992, 1.0 - abs(0.96 - (2.0 * abs(fract(0.005 * position.x) - 0.5)))) +
+            step(0.992, 1.0 - abs(0.96 - (2.0 * abs(fract(0.005 * position.z) - 0.5))))
             )
-            : isLighted * vec3(5.0, 0.8, 0.1) + isLight;
+            : isLighted * vec3(6.0, 0.8, 0.2) + isLight;
 
-          vec3 bottomLight =  isBuilding ? max((0.08 / (0.08 * position.y + 0.002)), 0.0) * vec3(0.5, 0.1, 0.8) : vec3(0.0);
+          vec3 bottomLight =  isBuilding ? max((0.004 / (0.002 * position.y + 0.0001)), 0.0) * vec3(0.5, 0.1, 0.8) : vec3(0.0);
 
           o_color = vec4(result * resultColor + bottomLight, 1.0) + vec4(constColor, 1.0);
           if (isSky) {

@@ -1,9 +1,11 @@
 import {Fab, Icon} from '@mui/material'
 import {useCanvas} from './useCanvas'
-import {useEffect} from 'react'
+import React, {ElementType, memo, useEffect} from 'react'
 import {resizeObserver, screenToViewPort} from 'glaku'
 
-export function Template({src, state, sendMouse = true}: {src: string, state?: object, sendMouse?: boolean}) {
+export const Template = memo(({src, state, wrapper, sendMouse = true}: {
+  src: string, state?: object, wrapper?: ElementType, sendMouse?: boolean
+}) => {
   const {canvas, post, ref} = useCanvas()
 
   useEffect(() => {
@@ -32,9 +34,11 @@ export function Template({src, state, sendMouse = true}: {src: string, state?: o
     }
   }, [ref])
 
+  const Wrapper = wrapper ?? React.Fragment
+  const wrapperProps = wrapper ? {post} : {}
 
   return (
-    <>
+    <Wrapper {...wrapperProps}>
       {canvas}
       <Fab sx={{position: 'absolute', right: 16, bottom: 16}}
         LinkComponent={'a'}
@@ -45,6 +49,6 @@ export function Template({src, state, sendMouse = true}: {src: string, state?: o
             code
         </Icon>
       </Fab>
-    </>
+    </Wrapper>
   )
-}
+})
