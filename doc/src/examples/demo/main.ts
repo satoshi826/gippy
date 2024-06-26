@@ -145,8 +145,8 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
   setHandler('target', (target) => {
     if (!target) return
     const [x, y] = target
-    cameraAngleH += 0.5 * x
-    cameraAngleV -= 0.4 * y
+    cameraAngleH += 0.35 * x
+    cameraAngleV -= 0.25 * y
     camera.position = calcCameraPosition()
     camera.update()
   })

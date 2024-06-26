@@ -40,12 +40,12 @@ const Wrapper = ({post, children}: {post : (any: object) => void, children : Rea
   }
 
   const tapEnd = () => {
-    if (!points.current || points.current.length < 6) {
+    if (!points.current || points.current.length < 4) {
       reset()
       return
     }
     const latestPoints = points.current[0]
-    const pastPoints = points.current[5]
+    const pastPoints = points.current[3]
 
     const diffX = latestPoints[0] - pastPoints[0]
     const diffY = latestPoints[1] - pastPoints[1]
@@ -78,7 +78,7 @@ const Wrapper = ({post, children}: {post : (any: object) => void, children : Rea
 
   const handleMouseLeave : React.MouseEventHandler<HTMLDivElement> = () => reset()
 
-  const frictionCoff = 0.000075
+  const frictionCoff = 0.00005
 
   useEffect(() => {
     function tick() {
