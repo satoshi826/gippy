@@ -7,5 +7,8 @@ export default defineConfig({
   plugins: [
     react(),
     visualizer()
-  ]
+  ],
+  worker: {
+    format: 'es'
+  }
 })
