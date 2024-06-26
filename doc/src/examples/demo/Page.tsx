@@ -111,6 +111,7 @@ const Wrapper = ({post, children}: {post : (any: object) => void, children : Rea
       display='flex'
       width='100%'
       height='100%'
+      sx={{touchAction: 'none', cursor: 'pointer', backgroundColor: 'red'}}
       onMouseMove={handleMouseMove}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
