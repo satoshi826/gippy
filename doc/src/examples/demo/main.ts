@@ -107,18 +107,16 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     u_far : camera.far
   })
 
-  const animation = new Loop({callback: ({elapsed}) => {
+  const animation = new Loop({callback: () => {
 
     [preRenderer, shadeRenderer, renderer].forEach(r => r.clear())
 
     // camera.position = [4000 * Math.cos(elapsed / 6000) * SCALE, 850 * SCALE, 4000 * Math.sin(elapsed / 6000) * SCALE]
     camera.update()
 
-    // set Camera and view-projection-matrix
     prepassProgram.setUniform({u_vpMatrix: camera.matrix.vp})
     shadeProgram.setUniform({u_cameraPosition: camera.position})
 
-    // render buildings
     prepassProgram.setUniform({u_material_type: 0})
     preRenderer.render(floorVao, prepassProgram)
 
@@ -144,7 +142,9 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     camera.aspect = width / height
   })
 
-  setHandler('target', ([x, y]) => {
+  setHandler('target', (target) => {
+    if (!target) return
+    const [x, y] = target
     cameraAngleH += 0.5 * x
     cameraAngleV -= 0.4 * y
     camera.position = calcCameraPosition()
