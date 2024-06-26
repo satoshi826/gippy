@@ -17,7 +17,7 @@ const Wrapper = ({post, children}: {post : (any: object) => void, children : Rea
     vel.current = null
   }
 
-  const tap = (clientX : number, clientY: number) => {
+  const tapStart = (clientX : number, clientY: number) => {
     if (vel.current) {
       reset()
       setInitVel(null)
@@ -26,17 +26,8 @@ const Wrapper = ({post, children}: {post : (any: object) => void, children : Rea
     points.current ??= [[0, 0, Date.now()]]
   }
 
-  const handleMouseDown : React.MouseEventHandler<HTMLDivElement> = ({clientX, clientY}) => tap(clientX, clientY)
-  const handleTouchStart : React.TouchEventHandler<HTMLDivElement> = ({changedTouches, touches}) => {
-    if (touches.length > 1) return
-    const touch = changedTouches[0]
-    const {clientX, clientY} = touch
-    tap(clientX, clientY)
-  }
-
-  const handleMouseMove : React.MouseEventHandler<HTMLDivElement> = (e) => {
+  const drag = (clientX: number, clientY: number) => {
     if (!start.current || !boxRef.current || !points.current) return
-    const {clientX, clientY} = e
     const [startX, startY] = start.current
     const shortSide = Math.min(boxRef.current.clientWidth, boxRef.current.clientHeight)
     const x = ((clientX - startX) / shortSide)
@@ -48,7 +39,7 @@ const Wrapper = ({post, children}: {post : (any: object) => void, children : Rea
     if (points.current.length > 6) points.current.pop()
   }
 
-  const handleMouseUp : React.MouseEventHandler<HTMLDivElement> = () => {
+  const tapEnd = () => {
     if (!points.current || points.current.length < 6) {
       reset()
       return
@@ -65,6 +56,25 @@ const Wrapper = ({post, children}: {post : (any: object) => void, children : Rea
     setInitVel([velX, velY])
     reset()
   }
+
+  const handleMouseDown : React.MouseEventHandler<HTMLDivElement> = ({clientX, clientY}) => tapStart(clientX, clientY)
+  const handleTouchStart : React.TouchEventHandler<HTMLDivElement> = ({changedTouches, touches}) => {
+    if (touches.length > 1) return
+    const touch = changedTouches[0]
+    const {clientX, clientY} = touch
+    tapStart(clientX, clientY)
+  }
+
+  const handleMouseMove : React.MouseEventHandler<HTMLDivElement> = ({clientX, clientY}) => drag(clientX, clientY)
+  const handleTouchMove : React.TouchEventHandler<HTMLDivElement> = ({changedTouches, touches}) => {
+    if (touches.length > 1) return
+    const touch = changedTouches[0]
+    const {clientX, clientY} = touch
+    drag(clientX, clientY)
+  }
+
+  const handleMouseUp : React.MouseEventHandler<HTMLDivElement> = tapEnd
+  const handleTouchEnd : React.TouchEventHandler<HTMLDivElement> = tapEnd
 
   const handleMouseLeave : React.MouseEventHandler<HTMLDivElement> = () => reset()
 
@@ -106,6 +116,8 @@ const Wrapper = ({post, children}: {post : (any: object) => void, children : Rea
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
       onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       {children}
     </Box>
