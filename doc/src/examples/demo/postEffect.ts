@@ -55,7 +55,7 @@ export const postEffect = (
           vec3 bloom = 0.03 * (blur);
           vec3 toneMapBloom = 5.0 * bloom / (1.0 + bloom);
           vec3 result = 1.0 * (toneMapRaw + toneMapBloom);
-          vec3 resultFog = (1.3 - depthLinear) * result +  (3.0 * depthLinear) * toneMapBloom;
+          vec3 resultFog = (1.2 - depthLinear) * result +  (2.5 * depthLinear) * toneMapBloom;
 
           o_color = vec4(resultFog, 1.0);
         }`

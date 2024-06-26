@@ -77,11 +77,11 @@ export const shade = (core: Core, lightNum: number, preRenderer: Renderer) => ne
           for(int i = 0; i < ${lightNum}; i++){
             lightVec = normalize(u_lightPosition[i] - position);
             lightDis = distance(u_lightPosition[i], position);
-            lightDecay = pow(lightDis, -1.2);
+            lightDecay = pow(lightDis, -1.15);
 
             reflectVec = reflect(-lightVec, normal);
             diffuse += 100.0 * lightDecay * max(0.0, dot(lightVec, normal));
-            specular += 5500.0 * lightDecay * pow(max(0.0, dot(viewVec, reflectVec)), specIntensity);
+            specular += 4000.0 * lightDecay * pow(max(0.0, dot(viewVec, reflectVec)), specIntensity);
           }
           float ambient = 0.02;
           float result = max((ambient + diffuse + specular) * 0.1, 0.01);

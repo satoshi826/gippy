@@ -27,13 +27,22 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     position: [0, 0, 0]
   })
 
-
   const lightPos = lightCubes.flatMap(({position}) => position ?? [])
 
+  const cameraR = 5500
+  let cameraAngleH = Math.PI / 4
+  let cameraAngleV = Math.PI / 12
+
+  const calcCameraPosition = () => {
+    const v = cameraR * Math.sin(cameraAngleV) * SCALE
+    const h = cameraR * Math.cos(cameraAngleV) * SCALE
+    return [h * Math.cos(cameraAngleH), v, h * Math.sin(cameraAngleH)]
+  }
+
   const camera = new Camera({
-    lookAt  : [0, -200 * SCALE, 0],
-    position: [0, 200 * SCALE, 0],
-    near    : 150 * SCALE,
+    lookAt  : [0, 50, 0],
+    position: calcCameraPosition(),
+    near    : 10 * SCALE,
     far     : 12000 * SCALE,
     fov     : 60
   })
@@ -102,7 +111,7 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
 
     [preRenderer, shadeRenderer, renderer].forEach(r => r.clear())
 
-    camera.position = [4000 * Math.cos(elapsed / 6000) * SCALE, 850 * SCALE, 4000 * Math.sin(elapsed / 6000) * SCALE]
+    // camera.position = [4000 * Math.cos(elapsed / 6000) * SCALE, 850 * SCALE, 4000 * Math.sin(elapsed / 6000) * SCALE]
     camera.update()
 
     // set Camera and view-projection-matrix
@@ -135,8 +144,11 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     camera.aspect = width / height
   })
 
-  setHandler('target', (a) => {
-    console.log(a)
+  setHandler('target', ([x, y]) => {
+    cameraAngleH += 0.5 * x
+    cameraAngleV -= 0.4 * y
+    camera.position = calcCameraPosition()
+    camera.update()
   })
 
 }
