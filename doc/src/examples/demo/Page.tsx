@@ -36,7 +36,7 @@ const Wrapper = ({post, children}: {post : (any: object) => void, children : Rea
     const dx = x - points.current[1][0]
     const dy = y - points.current[1][1]
     post({state: {target: [dx, dy]}})
-    if (points.current.length > 6) points.current.pop()
+    if (points.current.length > 4) points.current.pop()
   }
 
   const tapEnd = () => {
@@ -73,9 +73,12 @@ const Wrapper = ({post, children}: {post : (any: object) => void, children : Rea
     drag(clientX, clientY)
   }
 
+  const handleWheel : React.WheelEventHandler<HTMLDivElement> = ({deltaY}) => {
+    console.log(deltaY)
+  }
+
   const handleMouseUp : React.MouseEventHandler<HTMLDivElement> = tapEnd
   const handleTouchEnd : React.TouchEventHandler<HTMLDivElement> = tapEnd
-
   const handleMouseLeave : React.MouseEventHandler<HTMLDivElement> = () => reset()
 
   const frictionCoff = 0.00005
@@ -119,6 +122,7 @@ const Wrapper = ({post, children}: {post : (any: object) => void, children : Rea
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      onWheel={handleWheel}
     >
       {children}
     </Box>

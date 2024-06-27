@@ -107,12 +107,11 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     u_far : camera.far
   })
 
-  const animation = new Loop({callback: () => {
 
+  const render = () => {
     [preRenderer, shadeRenderer, renderer].forEach(r => r.clear())
 
     // camera.position = [4000 * Math.cos(elapsed / 6000) * SCALE, 850 * SCALE, 4000 * Math.sin(elapsed / 6000) * SCALE]
-    camera.update()
 
     prepassProgram.setUniform({u_vpMatrix: camera.matrix.vp})
     shadeProgram.setUniform({u_cameraPosition: camera.position})
@@ -135,11 +134,14 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     blurPass.render()
 
     renderer.render(planeVao, postEffectProgram)
-  }, interval: 0})
-  animation.start()
+  }
+
+  requestAnimationFrame(render)
 
   setHandler('resize', ({width, height}: {width: number, height: number} = {width: 100, height: 100}) => {
     camera.aspect = width / height
+    camera.update()
+    render()
   })
 
   setHandler('target', (target) => {
@@ -149,6 +151,7 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     cameraAngleV -= 0.25 * y
     camera.position = calcCameraPosition()
     camera.update()
+    render()
   })
 
 }

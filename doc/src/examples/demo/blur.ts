@@ -5,7 +5,7 @@ export type BlurPass = ReturnType<typeof getBlurPass>
 export const getBlurPass = (core: Core, targetTex : TextureWithInfo) => {
 
   const basePixelRatio = core.pixelRatio
-  const pixelRatios = [1, 0.5, 0.25]
+  const pixelRatios = basePixelRatio < 1.5 ? [1, 0.5, 0.25] : [0.5, 0.25, 0.125]
 
   const renderers = pixelRatios.map(pixelRatio => [
     new Renderer(core, {frameBuffer: [RGBA16F], pixelRatio}),
