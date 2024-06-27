@@ -6,7 +6,7 @@ const MAX_LIGHTS = 25
 
 export const getBuildings = () => {
 
-  const CUBE_NUM_OF_SIDE = 100
+  const CUBE_NUM_OF_SIDE = 150
   const CUBE_MARGIN = 100 * SCALE
   const AREA_SIZE = CUBE_NUM_OF_SIDE * CUBE_MARGIN
   const lightCubes : Model[] = []
