@@ -79,7 +79,9 @@ const Wrapper = ({post, children}: { post: (any: object) => void, children: Reac
 
   const handleMouseUp: React.MouseEventHandler<HTMLDivElement> = tapEnd
   const handleTouchEnd: React.TouchEventHandler<HTMLDivElement> = tapEnd
-  const handleMouseLeave: React.MouseEventHandler<HTMLDivElement> = () => reset()
+  const handleMouseLeave: React.MouseEventHandler<HTMLDivElement> = () => {
+    start.current = null
+  }
 
   const frictionCoff = 0.0005
 
@@ -111,7 +113,7 @@ const Wrapper = ({post, children}: { post: (any: object) => void, children: Reac
     }
 
     if (initVel || vel.current) {
-      lastTimestamp.current = performance.now() // 初回実行前に初期化
+      lastTimestamp.current = performance.now()
       animationFrameId = requestAnimationFrame(tick)
     }
 

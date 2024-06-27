@@ -86,7 +86,7 @@ export const shade = (core: Core, lightNum: number, preRenderer: Renderer) => ne
           float ambient = 0.02;
           float result = max((ambient + diffuse + specular) * 0.1, 0.01);
 
-          vec3 resultColor = isBuilding ? vec3(0.9, 1.2, 1.8) : vec3(0.9, 0.8, 0.8);
+          vec3 resultColor = isBuilding ? vec3(0.9, 1.2, 1.8) : vec3(0.8, 0.2, 0.8);
 
           vec3 constColor = isRoad ? vec3(12.0, 1.0, 4.0) * (
             step(0.99, 1.0 - abs(0.96 - (2.0 * abs(fract(0.005 * position.x - 0.5) - 0.5)))) +
