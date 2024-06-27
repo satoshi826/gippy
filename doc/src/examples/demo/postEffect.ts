@@ -52,10 +52,10 @@ export const postEffect = (
           float depthLinear = convertToLinearDepth(depth, u_near, u_far);
           vec3 blur = 1.0 * blur0 + 0.75 * blur1 +  0.25 * blur2;
 
-          vec3 bloom = 0.03 * (blur);
-          vec3 toneMapBloom = 5.0 * bloom / (1.0 + bloom);
+          vec3 bloom = 0.02 * (blur);
+          vec3 toneMapBloom = 6.0 * bloom / (1.0 + bloom);
           vec3 result = 1.0 * (toneMapRaw + toneMapBloom);
-          vec3 resultFog = (1.2 - depthLinear) * result +  (2.5 * depthLinear) * toneMapBloom;
+          vec3 resultFog = (1.5 - depthLinear) * result +  (3.5 * depthLinear) * toneMapBloom;
 
           o_color = vec4(resultFog, 1.0);
         }`

@@ -77,20 +77,20 @@ export const shade = (core: Core, lightNum: number, preRenderer: Renderer) => ne
           for(int i = 0; i < ${lightNum}; i++){
             lightVec = normalize(u_lightPosition[i] - position);
             lightDis = distance(u_lightPosition[i], position);
-            lightDecay = pow(lightDis, -1.15);
+            lightDecay = pow(lightDis, -1.2);
 
             reflectVec = reflect(-lightVec, normal);
-            diffuse += 100.0 * lightDecay * max(0.0, dot(lightVec, normal));
-            specular += 4000.0 * lightDecay * pow(max(0.0, dot(viewVec, reflectVec)), specIntensity);
+            diffuse += 120.0 * lightDecay * max(0.0, dot(lightVec, normal));
+            specular += 5000.0 * lightDecay * pow(max(0.0, dot(viewVec, reflectVec)), specIntensity);
           }
           float ambient = 0.02;
           float result = max((ambient + diffuse + specular) * 0.1, 0.01);
 
           vec3 resultColor = isBuilding ? vec3(0.9, 1.2, 1.8) : vec3(0.9, 0.8, 0.8);
 
-          vec3 constColor = isRoad ? vec3(10.0, 1.0, 4.0) * (
-            step(0.992, 1.0 - abs(0.96 - (2.0 * abs(fract(0.005 * position.x) - 0.5)))) +
-            step(0.992, 1.0 - abs(0.96 - (2.0 * abs(fract(0.005 * position.z) - 0.5))))
+          vec3 constColor = isRoad ? vec3(12.0, 1.0, 4.0) * (
+            step(0.99, 1.0 - abs(0.96 - (2.0 * abs(fract(0.005 * position.x - 0.5) - 0.5)))) +
+            step(0.99, 1.0 - abs(0.96 - (2.0 * abs(fract(0.005 * position.z - 0.5) - 0.5))))
             )
             : isLighted * vec3(6.0, 0.8, 0.2) + isLight;
 

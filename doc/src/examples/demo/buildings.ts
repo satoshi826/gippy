@@ -2,7 +2,7 @@ import {Model} from 'glaku'
 import {range, random} from 'jittoku'
 import {MAX_HEIGHT, SCALE} from './main'
 
-const MAX_LIGHTS = 25
+const MAX_LIGHTS = 20
 
 export const getBuildings = () => {
 
@@ -17,7 +17,7 @@ export const getBuildings = () => {
     rangeCube.forEach((m) => {
       const x = n * CUBE_MARGIN - AREA_SIZE / 2
       const y = m * CUBE_MARGIN - AREA_SIZE / 2
-      if (random(0, 10) > 7) acc[`${x}_${y}`] = true
+      if (random(0, 10) > 8) acc[`${x}_${y}`] = true
     })
     return acc
   }
@@ -41,7 +41,7 @@ export const getBuildings = () => {
       const isSmall = !isBig && cubeType![`${x}_${y}`] === true
       const isVoid = cubeType![`${x}_${y}`] === false
       if (isVoid) return []
-      const zScale = random(8 * SCALE, isBig ? (Math.abs(x) + Math.abs(y)) / 8 : MAX_HEIGHT)
+      const zScale = random(8 * SCALE, isBig ? (Math.abs(x) + Math.abs(y)) / 9 : MAX_HEIGHT)
       if (isSmall) {
         const scales = range(4).map(smallScale)
         return [
@@ -64,8 +64,7 @@ export const getBuildings = () => {
         ]
       }
 
-      const isLighted = isBig && random(0, 10) > 7 && lightCubes.length < MAX_LIGHTS && Math.sqrt(x * x + y * y) < AREA_SIZE * 0.35
-
+      const isLighted = isBig && random(0, 10) > 8.5 && lightCubes.length < MAX_LIGHTS && Math.sqrt(x * x + y * y) < AREA_SIZE * 0.35
 
       const model = new Model({
         position: [x, zScale, y],

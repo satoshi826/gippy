@@ -6,7 +6,7 @@ import {getBlurPass} from './blur'
 import {getBuildings} from './buildings'
 
 export const SCALE = 0.2
-export const MAX_HEIGHT = 120 * SCALE
+export const MAX_HEIGHT = 140 * SCALE
 
 //----------------------------------------------------------------
 
@@ -29,7 +29,7 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
 
   const lightPos = lightCubes.flatMap(({position}) => position ?? [])
 
-  const cameraR = 5500
+  const cameraR = 7500
   let cameraAngleH = Math.PI / 4
   let cameraAngleV = Math.PI / 12
 
@@ -43,7 +43,7 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     lookAt  : [0, 50, 0],
     position: calcCameraPosition(),
     near    : 10 * SCALE,
-    far     : 12000 * SCALE,
+    far     : 16000 * SCALE,
     fov     : 60
   })
 
