@@ -141,7 +141,7 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
   setHandler('resize', ({width, height}: {width: number, height: number} = {width: 100, height: 100}) => {
     camera.aspect = width / height
     camera.update()
-    requestAnimationFrame(render)
+    setTimeout(render, 100)
   })
 
   setHandler('target', (target) => {
