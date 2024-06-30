@@ -158,7 +158,7 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
 
   setHandler('zoom', (zoom) => {
     if (!zoom) return
-    cameraR += zoom / 2.5
+    cameraR -= zoom / 2
     if (cameraR > 8000) cameraR = 8000
     if (cameraR < 100) cameraR = 100
     camera.position = calcCameraPosition()
