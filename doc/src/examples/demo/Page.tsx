@@ -8,6 +8,7 @@ const Wrapper = ({post, children}: { post: (any: object) => void, children: Reac
   const points = useRef<[x: number, y: number, t: number][] | null>(null)
   const vel = useRef<[x: number, y: number] | null>(null)
   const lastTimestamp = useRef(performance.now())
+  const baseDistance = useRef<number | null>(null)
 
   const [initVel, setInitVel] = useState<[x: number, y: number] | null>(null)
 
@@ -15,6 +16,7 @@ const Wrapper = ({post, children}: { post: (any: object) => void, children: Reac
     start.current = null
     points.current = null
     vel.current = null
+    baseDistance.current = null
   }
 
   const tapStart = (clientX: number, clientY: number) => {
@@ -67,7 +69,6 @@ const Wrapper = ({post, children}: { post: (any: object) => void, children: Reac
   }
   const handleMouseMove: React.MouseEventHandler<HTMLDivElement> = ({clientX, clientY}) => drag(clientX, clientY)
 
-  const baseDistance = useRef<number | null>(null)
   const handleTouchMove: React.TouchEventHandler<HTMLDivElement> = ({changedTouches, touches}) => {
     if (touches.length === 1) {
       const touch = changedTouches[0]
@@ -75,7 +76,6 @@ const Wrapper = ({post, children}: { post: (any: object) => void, children: Reac
       drag(clientX, clientY)
       return
     }
-    if (!start.current) return
     const {0: {clientX:x1, clientY:y1}, 1: {clientX:x2, clientY:y2}} = changedTouches
     const distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
     baseDistance.current ??= distance
@@ -138,7 +138,14 @@ const Wrapper = ({post, children}: { post: (any: object) => void, children: Reac
       display='flex'
       width='100%'
       height='100%'
-      sx={{touchAction: 'none', cursor: 'pointer', userSelect: 'none'}}
+      sx={{
+        touchAction: 'none',
+        cursor     : 'pointer',
+        userSelect : 'none',
+        boxShadow  : `
+        inset 0 0 400px rgba(0, 0, 0, 0.6),
+        inset 0 0 800px rgba(0, 0, 0, 0.4);`
+      }}
       onMouseMove={handleMouseMove}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
