@@ -59,22 +59,35 @@ const Wrapper = ({post, children}: { post: (any: object) => void, children: Reac
 
   const handleMouseDown: React.MouseEventHandler<HTMLDivElement> = ({clientX, clientY}) => tapStart(clientX, clientY)
   const handleTouchStart: React.TouchEventHandler<HTMLDivElement> = ({changedTouches, touches}) => {
-    if (touches.length > 1) return
-    const touch = changedTouches[0]
-    const {clientX, clientY} = touch
-    tapStart(clientX, clientY)
-  }
+    const isPinch = touches.length > 0
+    if (!isPinch) {
+      const touch = changedTouches[0]
+      const {clientX, clientY} = touch
+      tapStart(clientX, clientY)
+      return
+    }
 
+  }
   const handleMouseMove: React.MouseEventHandler<HTMLDivElement> = ({clientX, clientY}) => drag(clientX, clientY)
+
+  const baseDistance = useRef<number | null>(null)
   const handleTouchMove: React.TouchEventHandler<HTMLDivElement> = ({changedTouches, touches}) => {
     if (touches.length > 1) return
     const touch = changedTouches[0]
     const {clientX, clientY} = touch
     drag(clientX, clientY)
+    if (!start.current) return
+    const {0: {clientX:x1, clientY:y1}, 1: {clientX:x2, clientY:y2}} = changedTouches
+    const distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+    baseDistance.current ??= distance
+    const zoom = 0.15 * ((distance / baseDistance.current) - 1)
+    post({state: {zoom}})
   }
 
+
+
   const handleWheel: React.WheelEventHandler<HTMLDivElement> = ({deltaY}) => {
-    console.log(deltaY)
+    post({state: {zoom: deltaY}})
   }
 
   const handleMouseUp: React.MouseEventHandler<HTMLDivElement> = tapEnd

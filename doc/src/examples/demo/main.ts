@@ -1,4 +1,4 @@
-import {Camera, Loop, Model, Vao, box, setHandler, plane, Core, Renderer, DEPTH, RGBA16F, sphere} from 'glaku'
+import {Camera, Model, Vao, box, setHandler, plane, Core, Renderer, DEPTH, RGBA16F, sphere} from 'glaku'
 import {prepass} from './prepass'
 import {shade} from './shading'
 import {postEffect} from './postEffect'
@@ -29,7 +29,7 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
 
   const lightPos = lightCubes.flatMap(({position}) => position ?? [])
 
-  const cameraR = 7500
+  let cameraR = 7500
   let cameraAngleH = Math.PI / 4
   let cameraAngleV = Math.PI / 12
 
@@ -40,11 +40,11 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
   }
 
   const camera = new Camera({
-    lookAt  : [0, 50, 0],
+    lookAt  : [0, 0, 0],
     position: calcCameraPosition(),
     near    : 10 * SCALE,
     far     : 16000 * SCALE,
-    fov     : 60
+    fov     : 70
   })
 
   const core = new Core({
@@ -149,9 +149,21 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     const [x, y] = target
     cameraAngleH += 0.35 * x
     cameraAngleV -= 0.25 * y
+    if (cameraAngleV > Math.PI / 2) cameraAngleV = Math.PI / 2
+    if (cameraAngleV < Math.PI / 60) cameraAngleV = Math.PI / 60
     camera.position = calcCameraPosition()
     camera.update()
-    requestAnimationFrame(render)
+    render()
+  })
+
+  setHandler('zoom', (zoom) => {
+    if (!zoom) return
+    cameraR += zoom / 2.5
+    if (cameraR > 8000) cameraR = 8000
+    if (cameraR < 100) cameraR = 100
+    camera.position = calcCameraPosition()
+    camera.update()
+    render()
   })
 
 }
