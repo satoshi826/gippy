@@ -59,6 +59,8 @@ const Wrapper = ({post, children}: { post: (any: object) => void, children: Reac
     reset()
   }
 
+  const zoom = (zoom : number) => post({state: {zoom}})
+
   const handleMouseDown: React.MouseEventHandler<HTMLDivElement> = ({clientX, clientY}) => tapStart(clientX, clientY)
   const handleTouchStart: React.TouchEventHandler<HTMLDivElement> = ({changedTouches, touches}) => {
     if (touches.length > 1) return
@@ -79,19 +81,16 @@ const Wrapper = ({post, children}: { post: (any: object) => void, children: Reac
     const {0: {clientX:x1, clientY:y1}, 1: {clientX:x2, clientY:y2}} = changedTouches
     const distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
     baseDistance.current ??= distance
-    const zoom = 500 * ((distance / baseDistance.current) - 1)
-    post({state: {zoom}})
+    const z = 500 * ((distance / baseDistance.current) - 1)
+    zoom(z)
   }
 
-  const handleWheel: React.WheelEventHandler<HTMLDivElement> = ({deltaY}) => post({state: {zoom: deltaY}})
+  const handleWheel: React.WheelEventHandler<HTMLDivElement> = ({deltaY}) => zoom(deltaY)
   const handleMouseUp: React.MouseEventHandler<HTMLDivElement> = tapEnd
   const handleTouchEnd: React.TouchEventHandler<HTMLDivElement> = tapEnd
-  const handleMouseLeave: React.MouseEventHandler<HTMLDivElement> = () => {
-    start.current = null
-  }
+  const handleMouseLeave: React.MouseEventHandler<HTMLDivElement> = () => start.current = null
 
   const frictionCoff = 0.0005
-
   useEffect(() => {
     let animationFrameId: number
 

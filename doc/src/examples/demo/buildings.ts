@@ -39,9 +39,7 @@ export const getBuildings = () => {
       if (n % 10 === 0 || m % 10 === 0)return []
 
       const isBig = random(0, 10) > 9.8
-      const isSmall = !isBig && cubeType![`${x}_${y}`] === true
-      const isVoid = cubeType![`${x}_${y}`] === false
-      if (isVoid) return []
+      const isSmall = !isBig && cubeType![`${x}_${y}`]
       const zScale = random(8 * SCALE, isBig ? (Math.abs(x) + Math.abs(y)) / 9 : MAX_HEIGHT)
       if (isSmall) {
         const scales = range(4).map(smallScale)

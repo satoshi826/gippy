@@ -23,12 +23,12 @@ export function useCanvas() {
     const pixelRatio = window.devicePixelRatio
     offScreenCanvas.width = width * pixelRatio
     offScreenCanvas.height = height * pixelRatio
-    console.log('connecting worker')
+    console.debug('connecting worker')
     workerRef.current = new Worker() as Worker
     post({canvas: offScreenCanvas, pixelRatio: devicePixelRatio}, [offScreenCanvas])
     workerRef.current!.onmessage = ({data}: {data: unknown}) => handlerRef.current.forEach((f) => f(data))
     return () => {
-      console.log('terminate worker')
+      console.debug('terminate worker')
       document.getElementsByName('canvas').forEach(el => el.remove())
       workerRef.current?.terminate()
       workerRef.current = null
