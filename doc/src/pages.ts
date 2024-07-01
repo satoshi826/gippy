@@ -13,11 +13,7 @@ export const pageTypes: PageType[] = ['docs', 'examples']
 export const pages: Page[] = [
   {
     type: 'docs',
-    name: 'getStarted'
-  },
-  {
-    type: 'docs',
-    name: 'hogeD'
+    name: 'introduction'
   },
   ...oMap(srcRecord, (([name]) => ({
     type: 'examples',

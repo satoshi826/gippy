@@ -10,7 +10,7 @@ export function Frame({children}: React.PropsWithChildren) {
   return (
     <Stack >
       <Header/>
-      <Stack direction='row'>
+      <Stack direction='row' >
         <Sidebar/>
         {children}
       </Stack>

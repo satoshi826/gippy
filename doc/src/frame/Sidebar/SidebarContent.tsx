@@ -51,7 +51,7 @@ function SidebarList({items, currentPage}: {items: Page[], currentPage: string})
           >
             <ListItemButton>
               <ListItemText >
-                {name}
+                {name.charAt(0).toUpperCase() + name.slice(1)}
               </ListItemText>
             </ListItemButton>
           </ListItem>

@@ -6,7 +6,6 @@ import {getBlurPass} from './blur'
 import {getBuildings} from './buildings'
 
 export const SCALE = 0.2
-export const MAX_HEIGHT = 140 * SCALE
 
 //----------------------------------------------------------------
 
@@ -107,11 +106,8 @@ export const main = async(canvas: HTMLCanvasElement | OffscreenCanvas, pixelRati
     u_far : camera.far
   })
 
-
   const render = () => {
     [preRenderer, shadeRenderer, renderer].forEach(r => r.clear())
-
-    // camera.position = [4000 * Math.cos(elapsed / 6000) * SCALE, 850 * SCALE, 4000 * Math.sin(elapsed / 6000) * SCALE]
 
     prepassProgram.setUniform({u_vpMatrix: camera.matrix.vp})
     shadeProgram.setUniform({u_cameraPosition: camera.position})
