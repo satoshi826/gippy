@@ -1,4 +1,4 @@
-import {Stack as MUIStack, styled} from '@mui/material'
+import {Stack} from '@mui/material'
 import {atom} from 'jotai'
 import {Header} from './Header/Header'
 import {Sidebar} from './Sidebar/Sidebar'
@@ -8,9 +8,9 @@ export const SIDEBAR_WIDTH = 200
 
 export function Frame({children}: React.PropsWithChildren) {
   return (
-    <Stack >
+    <Stack height='100dvh'>
       <Header/>
-      <Stack direction='row' >
+      <Stack direction='row' flexGrow={1}>
         <Sidebar/>
         {children}
       </Stack>
@@ -18,4 +18,3 @@ export function Frame({children}: React.PropsWithChildren) {
   )
 }
 
-const Stack = styled(MUIStack)({height: '100%'})

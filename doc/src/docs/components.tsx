@@ -1,7 +1,6 @@
 import {Divider, Typography, styled} from '@mui/material'
 import {Light as SyntaxHighlighter} from 'react-syntax-highlighter'
-import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript'
-import bash from 'react-syntax-highlighter/dist/esm/languages/hljs/bash'
+import ts from 'react-syntax-highlighter/dist/esm/languages/hljs/typescript'
 import {tomorrowNight} from 'react-syntax-highlighter/dist/esm/styles/hljs'
 import {CSSProperties, useMemo} from 'react'
 
@@ -29,8 +28,7 @@ export function BodyText({children}: React.PropsWithChildren) {
 }
 
 const useSyntaxHighlighter = () => useMemo(() => {
-  SyntaxHighlighter.registerLanguage('js', js)
-  SyntaxHighlighter.registerLanguage('bash', bash)
+  SyntaxHighlighter.registerLanguage('ts', ts)
   return SyntaxHighlighter
 }, [])
 
@@ -40,7 +38,8 @@ const syntaxHighlighterStyle: CSSProperties = {
   padding     : '8px 16px 8px 16px'
 }
 
-export function Syntax({children, lang = 'js'}: {children: string, lang?: 'js' | 'bash'}) {
+type SyntaxArg = {children: string, lang?: 'ts' | undefined, title?: string}
+export function Syntax({children, lang, title}: SyntaxArg) {
   const SyntaxHighlighter = useSyntaxHighlighter()
   return (
     <SyntaxHighlighter language={lang} style={tomorrowNight} customStyle={syntaxHighlighterStyle}>

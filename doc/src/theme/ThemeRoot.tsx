@@ -1,5 +1,5 @@
 import {useMemo} from 'react'
-import {ThemeProvider, createTheme} from '@mui/material'
+import {ThemeProvider, createTheme, CssBaseline} from '@mui/material'
 
 export function ThemeRoot({children}: React.PropsWithChildren) {
 
@@ -26,6 +26,7 @@ export function ThemeRoot({children}: React.PropsWithChildren) {
 
   return(
     <ThemeProvider theme={theme}>
+      <CssBaseline/>
       {children}
     </ThemeProvider>
   )
