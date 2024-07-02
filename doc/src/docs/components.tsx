@@ -9,7 +9,7 @@ const BodyTextTypography = styled(Typography)(({theme}) => ({color: theme.palett
 export function TitleText({children}: React.PropsWithChildren) {
   return (
     <>
-      <Typography variant='h3' >{children}</Typography>
+      <Typography variant='h3' noWrap>{children}</Typography>
       <Divider sx={{mt: 2}}/>
     </>
   )

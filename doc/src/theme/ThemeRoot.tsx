@@ -1,5 +1,5 @@
 import {useMemo} from 'react'
-import {ThemeProvider, createTheme, CssBaseline} from '@mui/material'
+import {ThemeProvider, createTheme, CssBaseline, useTheme} from '@mui/material'
 
 export function ThemeRoot({children}: React.PropsWithChildren) {
 
@@ -27,7 +27,33 @@ export function ThemeRoot({children}: React.PropsWithChildren) {
   return(
     <ThemeProvider theme={theme}>
       <CssBaseline/>
+      <ScrollStyle/>
       {children}
     </ThemeProvider>
+  )
+}
+
+function ScrollStyle() {
+  const {palette} = useTheme()
+  return (
+    <style dangerouslySetInnerHTML={{
+      __html: `
+      ::-webkit-scrollbar-track{
+        background: ${palette.grey[900]};
+        border: 0.8px solid ${palette.background.default};
+      }
+      ::-webkit-scrollbar-thumb{
+        background: ${palette.grey[700]};
+        border-radius: 10px;
+        border: 1.5px solid ${palette.background.default};
+      }
+      ::-webkit-scrollbar{
+        transition : all .6s;
+        height: 10px;
+        width: 12px;
+      }
+    `
+    }}>
+    </style>
   )
 }

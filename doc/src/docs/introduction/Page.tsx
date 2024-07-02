@@ -5,7 +5,7 @@ import {HEADER_HEIGHT} from '../../frame/Header/Header'
 export default function Page() {
   return (
     <Stack flexDirection='row' justifyContent='center' flexGrow={1} maxHeight={`calc(100dvh - ${HEADER_HEIGHT}px)`} overflow='auto'>
-      <Container sx={{mx: 1, py: 2}}>
+      <Container sx={{px: 1, py: 2}} maxWidth="md">
         <TitleText >Introduction</TitleText>
         <SubTitleText >Overview</SubTitleText>
         <BodyText >
@@ -26,7 +26,7 @@ export default function Page() {
 }
 
 const quickStartTs =
- `import { Core, Vao, Program, Renderer } from "glaku";
+`import { Core, Vao, Program, Renderer } from "glaku";
 
 const canvas = document.getElementById("c");
 const core = new Core({ canvas });
